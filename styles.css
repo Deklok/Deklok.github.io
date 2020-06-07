@@ -1,0 +1,11 @@
+.gbutton {
+    position: absolute;
+    left: 50%;
+    margin-left: -50px;
+}
+
+.main {
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+}
