@@ -7,7 +7,7 @@ function Main() {
     var newUsername;
     var error = false;
     return {        
-        oninit: function() {
+        oncreate: function() {
             gapi.load('auth2', function() {
                 gapi.auth2.init({
                     client_id: '325821250313-rpe75eqduheb1dduudjdq4cbhb72fro4.apps.googleusercontent.com'
