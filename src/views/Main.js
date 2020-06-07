@@ -18,7 +18,6 @@ function Main() {
                         client_id: '325821250313-rpe75eqduheb1dduudjdq4cbhb72fro4.apps.googleusercontent.com'
                     }).then(function(response){
                         console.log("Google Auth loaded");
-                        console.log(response);
                         GoogleAuth = response;
                         if (GoogleAuth.isSignedIn.get()) {
                             var GoogleUser = GoogleAuth.currentUser.get();
