@@ -6,29 +6,33 @@ function Main() {
     var GoogleAuth;
     var newUsername;
     var error = false;
-    function test() {
-        console.log("testing binding to google api loaded");
-    }
     return {        
-        oncreate: function() {
-            gapi.load('auth2', function() {
-                gapi.auth2.init({
-                    client_id: '325821250313-rpe75eqduheb1dduudjdq4cbhb72fro4.apps.googleusercontent.com'
-                }).then(function(response){
-                    GoogleAuth = response
-                    GoogleAuth.currentUser.listen(function(GoogleUser) {
-                        console.log(GoogleUser.getBasicProfile().getEmail())
-                        User.login(GoogleUser.getBasicProfile().getEmail()).then(()=> {
-                            if (User.exist) {
-                                render = (User.role!=null)?User.role:5;
-                            } else {
-                                render = 10;
-                            }
-                            m.redraw();
-                        });
+        oninit: function() {
+            var script = document.createElement('script');
+            script.src = "https://apis.google.com/js/platform.js"
+            script.async = true;
+            script.defer = true;
+            script.onload = function() {
+                gapi.load('auth2', function() {
+                    gapi.auth2.init({
+                        client_id: '325821250313-rpe75eqduheb1dduudjdq4cbhb72fro4.apps.googleusercontent.com'
+                    }).then(function(response){
+                        GoogleAuth = response
+                        GoogleAuth.currentUser.listen(function(GoogleUser) {
+                            console.log(GoogleUser.getBasicProfile().getEmail())
+                            User.login(GoogleUser.getBasicProfile().getEmail()).then(()=> {
+                                if (User.exist) {
+                                    render = (User.role!=null)?User.role:5;
+                                } else {
+                                    render = 10;
+                                }
+                                m.redraw();
+                            });
+                        })
                     })
-                })
-            });
+                });
+            }
+            document.head.append(script);
         },
         view: function () {
             return m("div.main", [
