@@ -18,16 +18,19 @@ function Main() {
                         client_id: '325821250313-rpe75eqduheb1dduudjdq4cbhb72fro4.apps.googleusercontent.com'
                     }).then(function(response){
                         GoogleAuth = response
-                        GoogleAuth.currentUser.listen(function(GoogleUser) {
-                            console.log(GoogleUser.getBasicProfile().getEmail())
-                            User.login(GoogleUser.getBasicProfile().getEmail()).then(()=> {
-                                if (User.exist) {
-                                    render = (User.role!=null)?User.role:5;
-                                } else {
-                                    render = 10;
-                                }
-                                m.redraw();
-                            });
+                        GoogleAuth.isSignedIn.listen((value) => {
+                            if (value) {
+                                var GoogleUser = GoogleAuth.currentUser.get();
+                                console.log(GoogleUser.getBasicProfile().getEmail())
+                                User.login(GoogleUser.getBasicProfile().getEmail()).then(()=> {
+                                    if (User.exist) {
+                                        render = (User.role!=null)?User.role:5;
+                                    } else {
+                                        render = 10;
+                                    }
+                                    m.redraw();
+                                });
+                            }
                         })
                     })
                 });
