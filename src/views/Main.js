@@ -6,6 +6,9 @@ function Main() {
     var GoogleAuth;
     var newUsername;
     var error = false;
+    function test() {
+        console.log("testing binding to google api loaded");
+    }
     return {        
         oncreate: function() {
             gapi.load('auth2', function() {
