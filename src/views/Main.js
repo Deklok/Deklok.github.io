@@ -56,12 +56,14 @@ function Main() {
                     m("div",[
                         m("button",{
                             onclick: () => {
-                                User.register(User.username,User.email).then((result) => {
+                                User.register(newUsername,User.email).then((result) => {
                                     if (result) render = 5;
                                     if (!result) error = true;
                                 })
                             }
-                        })
+                        },[
+                            "PICALE WE"
+                        ])
                     ])
                 ]),
                 render==-1 && m("div","Si ves esto, estuviste tan meco que te banearon LMAO"),
