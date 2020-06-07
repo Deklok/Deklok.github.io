@@ -1,5 +1,5 @@
 import m from "mithril";
-var BASE_URL = "http://ec2-54-173-20-147.compute-1.amazonaws.com:8080";
+var BASE_URL = "https://ec2-54-173-20-147.compute-1.amazonaws.com:8080";
 //var BASE_URL = "https://localhost:8080";
 
 var User = {
