@@ -17,7 +17,9 @@ function Main() {
                     gapi.auth2.init({
                         client_id: '325821250313-rpe75eqduheb1dduudjdq4cbhb72fro4.apps.googleusercontent.com'
                     }).then(function(response){
-                        GoogleAuth = response
+                        console.log("Google Auth loaded");
+                        console.log(response);
+                        GoogleAuth = response;
                         if (GoogleAuth.isSignedIn.get()) {
                             var GoogleUser = GoogleAuth.currentUser.get();
                             console.log(GoogleUser.getBasicProfile().getEmail())
