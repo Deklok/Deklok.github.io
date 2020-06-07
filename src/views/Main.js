@@ -18,20 +18,28 @@ function Main() {
                         client_id: '325821250313-rpe75eqduheb1dduudjdq4cbhb72fro4.apps.googleusercontent.com'
                     }).then(function(response){
                         GoogleAuth = response
-                        GoogleAuth.isSignedIn.listen((value) => {
-                            console.log("Sign in state changed");
-                            if (value) {
-                                var GoogleUser = GoogleAuth.currentUser.get();
-                                console.log(GoogleUser.getBasicProfile().getEmail())
-                                User.login(GoogleUser.getBasicProfile().getEmail()).then(()=> {
-                                    if (User.exist) {
-                                        render = (User.role!=null)?User.role:5;
-                                    } else {
-                                        render = 10;
-                                    }
-                                    m.redraw();
-                                });
-                            }
+                        if (GoogleAuth.isSignedIn.get()) {
+                            var GoogleUser = GoogleAuth.currentUser.get();
+                            console.log(GoogleUser.getBasicProfile().getEmail())
+                            User.login(GoogleUser.getBasicProfile().getEmail()).then(()=> {
+                                if (User.exist) {
+                                    render = (User.role!=null)?User.role:5;
+                                } else {
+                                    render = 10;
+                                }
+                                m.redraw();
+                            });
+                        }
+                        GoogleAuth.currentUser.listen(function(GoogleUser) {
+                            console.log(GoogleUser.getBasicProfile().getEmail())
+                            User.login(GoogleUser.getBasicProfile().getEmail()).then(()=> {
+                                if (User.exist) {
+                                    render = (User.role!=null)?User.role:5;
+                                } else {
+                                    render = 10;
+                                }
+                                m.redraw();
+                            });
                         })
                     })
                 });
