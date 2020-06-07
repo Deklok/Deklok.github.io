@@ -19,6 +19,7 @@ function Main() {
                     }).then(function(response){
                         GoogleAuth = response
                         GoogleAuth.isSignedIn.listen((value) => {
+                            console.log("Sign in state changed");
                             if (value) {
                                 var GoogleUser = GoogleAuth.currentUser.get();
                                 console.log(GoogleUser.getBasicProfile().getEmail())
