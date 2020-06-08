@@ -9,3 +9,8 @@
     margin: 0 auto;
     text-align: center;
 }
+
+.marginbtn {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
