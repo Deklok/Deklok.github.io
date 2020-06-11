@@ -1,6 +1,8 @@
 import m from "mithril";
 import { User } from "../models/User";
 import { Streamer } from "../views/Streamer";
+import { Mod } from "../views/Mod";
+import { Submit } from "../views/Submit";
 
 function Main() {
     var render = 0;
@@ -89,8 +91,8 @@ function Main() {
                 ]),
                 render==-1 && m("div","Si ves esto, estuviste tan meco que te banearon LMAO"),
                 render==1 && m(Streamer),
-                render==2 && m("div", "Si ves esto, eres moderador uwu"),
-                render==5 && m("div","Si ves esto eres un mortal más. Si se supone que tienes que ver otra cosa, dile a jebus que no mame"),
+                render==2 && m(Mod),
+                render==5 && m(Submit),
                 error && m("div","Algun error paso en las peticiones al servidor qlero :<")
             ])
         }

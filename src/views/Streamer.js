@@ -1,11 +1,16 @@
 import m from "mithril";
+import { User } from "../models/User";
 
 function Streamer() {
+    var socket;
     var livesession = false;
     return {
+        oninit: function() {
+            User.connectsocket();
+        },
         view: function(vnode) {
             return m("div",{
-                class: "card-panel purple darken-4",
+                class: "card-panel deep-purple lighten-2",
                 style: "border-radius: 10px;"
             },[
                 m("div",{
@@ -13,6 +18,7 @@ function Streamer() {
                 },[
                     m("button",{
                         class: "waves-effect waves-purple btn white",
+                        style: "height: 5em;width: 40%;",
                         onclick: () => {
                             var badge = document.getElementById("livebadge").classList;
                             if (livesession) {
@@ -26,7 +32,7 @@ function Streamer() {
                         }
                     },[
                         m("div",{
-                            class: "black-text"
+                            class: "grey-text text-darken-3"
                         },"Iniciar sesion en tu gfa")
                     ]),
                     m("span",{
@@ -42,10 +48,10 @@ function Streamer() {
                     class: "btn-streamer-main"
                 },[
                     m("button",{
-                        class: "waves-effect waves-purple btn white"
+                        class: "waves-effect waves-purple btn white btn-mainmenu"
                     },[
                         m("div",{
-                            class: "black-text"
+                            class: "grey-text text-darken-3"
                         },"Pantalla")
                     ])
                 ]),
@@ -53,10 +59,10 @@ function Streamer() {
                     class: "btn-streamer-main"
                 },[
                     m("button",{
-                        class: "waves-effect waves-purple btn white"
+                        class: "waves-effect waves-purple btn white btn-mainmenu"
                     },[
                         m("div",{
-                            class: "black-text"
+                            class: "grey-text text-darken-3"
                         },"Moderación")
                     ])
                 ]),
@@ -64,10 +70,10 @@ function Streamer() {
                     class: "btn-streamer-main"
                 },[
                     m("button",{
-                        class: "waves-effect waves-purple btn white"
+                        class: "waves-effect waves-purple btn white btn-mainmenu"
                     },[
                         m("div",{
-                            class: "black-text"
+                            class: "grey-text text-darken-3"
                         },"Configuración")
                     ])
                 ]),
@@ -78,7 +84,7 @@ function Streamer() {
                         class: "waves-effect waves-purple btn white",
                     },[
                         m("div",{
-                            class: "black-text"
+                            class: "grey-text text-darken-3"
                         },"Descargar pack")
                     ])
                 ]),
