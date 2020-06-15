@@ -3,14 +3,14 @@ import { User } from "../models/User";
 import { Streamer } from "../views/Streamer";
 import { Mod } from "../views/Mod";
 import { Submit } from "../views/Submit";
+import { NewUser } from "../views/NewUser";
 
-function Main() {
-    var render = 0;
-    var GoogleAuth;
-    var newUsername;
+function Main() {    
+    var GoogleAuth;    
     var error = false;
     return {        
         oninit: function() {
+            document.oncontextmenu = new Function("return false");
             var script = document.createElement('script');
             script.src = "https://apis.google.com/js/platform.js"
             script.async = true;
@@ -27,9 +27,9 @@ function Main() {
                             console.log(GoogleUser.getBasicProfile().getEmail())
                             User.login(GoogleUser.getBasicProfile().getEmail()).then(()=> {
                                 if (User.exist) {
-                                    render = (User.role!=null)?User.role:5;
+                                    User.role = (User.role!=null)?User.role:5;
                                 } else {
-                                    render = 10;
+                                    User.role = 10;
                                 }
                                 m.redraw();
                             });
@@ -38,9 +38,9 @@ function Main() {
                             console.log(GoogleUser.getBasicProfile().getEmail())
                             User.login(GoogleUser.getBasicProfile().getEmail()).then(()=> {
                                 if (User.exist) {
-                                    render = (User.role!=null)?User.role:5;
+                                    User.role = (User.role!=null)?User.role:5;
                                 } else {
-                                    render = 10;
+                                    User.role = 10;
                                 }
                                 m.redraw();
                             });
@@ -52,7 +52,7 @@ function Main() {
         },
         view: function () {
             return m("div.main", [
-                render==0 && m("div",[
+                User.role==0 && m("div",[
                     m("div",{
                         style: {
                             "margin-bottom": "1em"
@@ -67,32 +67,11 @@ function Main() {
                         }
                     })
                 ]),
-                render==10 && m("div",[
-                    "Detecte que eres nuevo. Aqui deberia salir algo para que metas el username que usaras pero probablemente el programador es tan huevon que no esta aún",
-                    m("div",[
-                        m("input",{
-                            onchange: (e) => {
-                                newUsername = e.target.value;
-                            }
-                        }),
-                    ]),
-                    m("div",[
-                        m("button",{
-                            onclick: () => {
-                                User.register(newUsername,User.email).then((result) => {
-                                    if (result) render = 5;
-                                    if (!result) error = true;
-                                })
-                            }
-                        },[
-                            "PICALE WE"
-                        ])
-                    ])
-                ]),
-                render==-1 && m("div","Si ves esto, estuviste tan meco que te banearon LMAO"),
-                render==1 && m(Streamer),
-                render==2 && m(Mod),
-                render==5 && m(Submit),
+                User.role==10 && m(NewUser),
+                User.role==-1 && m("div","Si ves esto, estuviste tan meco que te banearon LMAO"),
+                User.role==1 && m(Streamer),
+                User.role==2 && m(Mod),
+                User.role==5 && m(Submit),
                 error && m("div","Algun error paso en las peticiones al servidor qlero :<")
             ])
         }

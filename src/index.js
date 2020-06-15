@@ -1,4 +1,8 @@
 import m from "mithril"
 import { Main } from "./views/Main"
+import { Panel } from "./views/Panel"
 
-m.mount(document.body, Main);
+m.route(document.body, "/",{
+    '/': Main,
+    '/panel': Panel
+});
