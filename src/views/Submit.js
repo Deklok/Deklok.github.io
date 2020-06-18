@@ -2,9 +2,12 @@ import m from "mithril";
 import { User } from "../models/User";
 import { Offline } from "./Offline";
 import { Loading } from "./Loading";
+import { Ban } from "./Ban";
 
 function Submit() {
     var offline;
+    var reviewmsg = null;
+    var ban = false;
     var loading = true;
     var onreview;
     var filename;
@@ -31,15 +34,28 @@ function Submit() {
                     User.pendingsubmission().then((res) => {
                         onreview = res;
                         loading = false;
+                        m.redraw();
                     }).catch((error)=> {
                         offline = true;
                         loading = false;
+                        m.redraw();
                         console.log(error);  
                     })
                 } else {
                     offline = true;
                     loading = false;
+                    m.redraw();
                 }
+                User.socket.on('reviewed',(approbed) => {
+                    onreview = false;
+                    reviewmsg = (approbed)?"Tu meme fue aprobado Pog":"Tu meme fue rechazado Sadge";
+                    m.redraw();
+                });
+                User.socket.on('banned',() => {
+                    onreview = false;
+                    ban = true;
+                    m.redraw();
+                });
             }).catch((error) => {
                 offline = true;
                 loading = false;
@@ -66,7 +82,9 @@ function Submit() {
                             style: "height: 20em;"
                         }),
                         m("p.flow-text","Estamos revisando tu última solicitud. Una vez rechazada o aprobada, podrás enviar otra")
-                    ]) : m("div",[
+                    ]) : ban ? m(Ban) 
+                    : m("div",[
+                        reviewmsg != null && m("div",reviewmsg),
                         m("blockquote",[
                             m("div",{
                                 style: "font-weight: bold;"
@@ -138,6 +156,7 @@ function Submit() {
                                 class: "waves-effect waves-purple btn white",
                                 disabled: btndisabled,
                                 onclick: function() {
+                                    btndisabled = true;
                                     User.socket.emit('sendsubmission',{
                                         username: User.username,
                                         msg: msg,
@@ -145,6 +164,8 @@ function Submit() {
                                     },(response)=>{
                                         if (response) { 
                                             onreview = true
+                                            styleimg = "display:none";
+                                            filename = "";
                                             m.redraw();
                                         }
                                     });

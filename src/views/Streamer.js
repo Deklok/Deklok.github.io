@@ -19,8 +19,8 @@ function Streamer() {
                 if (res.live) {
                     livesession = res.live;
                     idlive = res.id;
-                    initialloading = false;
                 }
+                initialloading = false;
             }).catch((error) => {
                 console.log(error);
                 initialloading = false;
@@ -96,7 +96,11 @@ function Streamer() {
                         }, [
                             m("button", {
                                 class: "waves-effect waves-purple btn white btn-mainmenu",
-                                disabled: !livesession
+                                disabled: !livesession,
+                                onclick: () => {
+                                    var urlpanel = "/projectq/#!/panel"
+                                    window.open(window.location.origin + urlpanel);
+                                }
                             }, [
                                 m("div", {
                                     class: "grey-text text-darken-3"

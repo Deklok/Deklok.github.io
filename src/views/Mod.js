@@ -22,13 +22,13 @@ function Mod() {
             User.socket.on('updatequeue',(username) => {
                 queue = queue.filter( u => u.username !== username );
                 m.redraw();
-            })
+            });
             User.islive().then((res) => {
                 if (res.live) {
                     offline = !res.live;
                     User.getqueue(res.id).then((res2) => {
                         for (var i = 0; i < res2.length; i++) {
-                            var b64encoded = btoa(String.fromCharCode.apply(null,res2[i].src.data));
+                            var b64encoded = new Buffer( res2[i].src.data, 'binary' ).toString('base64');
                             var base64String = "data:image/*;base64," + b64encoded.split("base64")[1]; 
                             queue.push({
                                 username: res2[i].username,
@@ -54,7 +54,7 @@ function Mod() {
         view: function () {
             return offline ? m(Offline) : m("div", {
                 class: "card-panel deep-purple lighten-2",
-                style: "border-radius: 10px;margin-top:150px"
+                style: "border-radius: 10px;margin-top:150px;min-width: 870px;"
             }, [
                 m("img.header-idol",{
                     src: "resources/idol-mod.png",
@@ -92,7 +92,8 @@ function Mod() {
                                                             status: 'A',
                                                             username: i.username,
                                                             msg: i.msg,
-                                                            src: i.src
+                                                            src: i.src,
+                                                            mod: User.username
                                                         },(response) => {
                                                             if (response) {
                                                                 queue = queue.filter( u => u.username !== i.username );
@@ -106,7 +107,8 @@ function Mod() {
                                                     onclick: () => {
                                                         User.socket.emit("changestatussubmission",{
                                                             status: 'R',
-                                                            username: i.username
+                                                            username: i.username,
+                                                            mod: User.username
                                                         },(response) => {
                                                             if (response) {
                                                                 queue = queue.filter( u => u.username !== i.username );
@@ -120,7 +122,8 @@ function Mod() {
                                                     onclick: () => {
                                                         User.socket.emit("changestatussubmission",{
                                                             status: 'B',
-                                                            username: i.username
+                                                            username: i.username,
+                                                            mod: User.username
                                                         },(response) => {
                                                             if (response) {
                                                                 queue = queue.filter( u => u.username !== i.username );

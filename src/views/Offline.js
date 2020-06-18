@@ -15,10 +15,10 @@ function Offline() {
                         m("img",{
                             src: "resources/idol-sleep.png",
                             draggable: false,
-                            style: "width: 70%"
+                            style: "width: 70%;max-width: 400px;min-width: 200px;"
                         }),
                         m("div.text-flow",{
-                            style: "font-size: xxx-large;font-weight: bolder;"
+                            style: "font-size: 3em;font-weight: bolder;"
                         },"En este momento no hay un directo activo")
                     ])
                 ])

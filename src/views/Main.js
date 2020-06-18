@@ -4,6 +4,7 @@ import { Streamer } from "../views/Streamer";
 import { Mod } from "../views/Mod";
 import { Submit } from "../views/Submit";
 import { NewUser } from "../views/NewUser";
+import { Ban } from "../views/Ban";
 
 function Main() {    
     var GoogleAuth;    
@@ -52,23 +53,32 @@ function Main() {
         },
         view: function () {
             return m("div.main", [
-                User.role==0 && m("div",[
-                    m("div",{
-                        style: {
-                            "margin-bottom": "1em"
-                        }
-                    },"Bienvenido a mi prueba pitera :D"),
+                User.role==0 && m("div",{
+                    class: "card-panel deep-purple lighten-2",
+                    style: "border-radius: 10px; min-width:300px;width: min-content;"
+                },[
+                    m("div.row",[
+                        m("div.white-text",{
+                            style: "font-size: 3em;font-weight: 500;"
+                        },"Bienvenido")
+                    ]),
+                    m("div.text-flow",{
+                        style: "font-size: 1.6em;font-weight: 600;color: white"
+                    },"Para avanzar debes iniciar sesión con Google"),
+                    m("img",{
+                        src: "resources/idol-login.png",
+                        draggable: false,
+                        style: "max-width: 300px;width: 60%;"
+                    }),
                     m("div", {
                         class: "g-signin2",
                         style: {
-                            position: "absolute",
-                            left: "50%",
-                            "margin-left": "-50px",
+                            "margin-left": "27%",
                         }
                     })
                 ]),
                 User.role==10 && m(NewUser),
-                User.role==-1 && m("div","Si ves esto, estuviste tan meco que te banearon LMAO"),
+                User.role==-1 && m(Ban),
                 User.role==1 && m(Streamer),
                 User.role==2 && m(Mod),
                 User.role==5 && m(Submit),

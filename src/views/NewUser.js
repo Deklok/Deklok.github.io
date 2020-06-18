@@ -4,6 +4,7 @@ import { User } from "../models/User";
 function NewUser() {
     var newUsername;
     var btnDisabled = true;
+    var userInUse = false;
     return {
         view: function() {
             return m("div",{
@@ -23,6 +24,9 @@ function NewUser() {
                             style: "font-weight: bold;"
                         },"(Ten cuidado, no podrás cambiarlo más adelante)")
                     ]),
+                    userInUse && m("div",{
+                        style: "font-size: 1.5em;color: red;"
+                    },"Este nombre de usuario ya está en uso"),
                     m("div.row",[
                         m("div.input-field",[
                             m("input",{
@@ -45,9 +49,22 @@ function NewUser() {
                         m("button",{
                             class: "waves-effect waves-purple btn white",
                             onclick: () => {
-                                User.register(newUsername,User.email).then((result) => {
-                                    if (result) render = 5;
-                                    if (!result) error = true;
+                                btnDisabled = true;
+                                userInUse = false;
+                                User.usernameExists(newUsername).then((result) => {
+                                    if (!result) {
+                                        User.register(newUsername,User.email).then((result2) => {
+                                            if (result2) {
+                                                User.role = 5;
+                                                User.username = newUsername;
+                                            }
+                                            if (!result2) error = true;
+                                            btnDisabled = false;
+                                        })
+                                    } else {
+                                        userInUse = true;
+                                        btnDisabled = false;
+                                    }
                                 })
                             },
                             disabled: btnDisabled

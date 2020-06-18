@@ -10,9 +10,9 @@ function Panel() {
         post = null
     }
     return {
-        oninit: function() {
+        oncreate: function() {
             if (User.socket == null) {
-                User.conneclivestream();
+                User.connectlivestream();
             } else {
                 User.socket.emit("livestream");
             }
@@ -30,9 +30,6 @@ function Panel() {
         },
         view: function() {
             return m("div",[
-                m("div",{
-                    class: "panel-username"
-                },"MENSAJE PARA QUE OBS DEJE DE PUTEAR"),
                 onscreen && m("div",{
                     id: "maincard",
                     class: "card-panel deep-purple lighten-2 introducing panel-stream",
