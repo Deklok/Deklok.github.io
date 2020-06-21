@@ -3,11 +3,26 @@ import { User } from "../models/User";
 
 function Panel() {
     var onscreen = false;
+    var queue = [];
     var post;
+    var timeonscreen = 10000;
+    var timetonext = 60000;
+    function getfromqueue() {
+        post = queue.pop();
+        showonscreen();
+    }
     function removefromscreen() { 
         onscreen = false
         m.redraw();
         post = null
+        if (queue.length > 0) {
+            setTimeout(getfromqueue,timetonext);
+        }
+    }
+    function showonscreen() {
+        onscreen = true;
+        m.redraw();
+        setTimeout(removefromscreen,timeonscreen);
     }
     return {
         oncreate: function() {
@@ -17,15 +32,21 @@ function Panel() {
                 User.socket.emit("livestream");
             }
             User.socket.on('new',(submission) => {
-                post = {
-                    username: submission.username,
-                    msg: submission.msg,
-                    src: submission.src
-                };
+                if (post == null) {
+                    post = {
+                        username: submission.username,
+                        msg: submission.msg,
+                        src: submission.src
+                    };
+                } else {
+                    queue.push({
+                        username: submission.username,
+                        msg: submission.msg,
+                        src: submission.src
+                    });
+                }
                 console.log(post);
-                onscreen = true;
-                m.redraw();
-                setTimeout(removefromscreen,10000);
+                showonscreen();
             });
         },
         view: function() {

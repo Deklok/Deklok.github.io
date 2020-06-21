@@ -6,6 +6,8 @@ import { Loading } from "./Loading";
 function Mod() {
     var offline;
     var loading = true;
+    var updatefromevent = false;
+    var btnevents = false;
     var statusloading = false;
     var queue = [];
     var eleminit = [];
@@ -18,6 +20,9 @@ function Mod() {
             User.socket.on('submission', (submission) => {
                 queue.push({ username: submission.username, msg: submission.msg, src: submission.image });
                 m.redraw();
+                var elems = document.querySelectorAll('.materialboxed');
+                M.Materialbox.init(elems[elems.length-1]);
+                if (btnevents) { btnevents = false }
             });
             User.socket.on('updatequeue',(username) => {
                 queue = queue.filter( u => u.username !== username );
@@ -46,10 +51,6 @@ function Mod() {
                 offline = true;
                 console.log(error);
             })
-        },
-        onupdate: function () {
-            var elems = document.querySelectorAll('.materialboxed');
-            M.Materialbox.init(elems[elems.length-1]);
         },
         view: function () {
             return offline ? m(Offline) : m("div", {
@@ -87,48 +88,39 @@ function Mod() {
                                             m("div.center", [
                                                 m("button", {
                                                     class: "waves-effect waves-light btn green btn-mod",
+                                                    disabled: btnevents,
                                                     onclick: () => {
+                                                        btnevents = true;
                                                         User.socket.emit("changestatussubmission",{
                                                             status: 'A',
                                                             username: i.username,
                                                             msg: i.msg,
                                                             src: i.src,
                                                             mod: User.username
-                                                        },(response) => {
-                                                            if (response) {
-                                                                queue = queue.filter( u => u.username !== i.username );
-                                                                m.redraw();
-                                                            }
                                                         })
                                                     }
                                                 }, "A"),
                                                 m("button", {
                                                     class: "waves-effect waves-light btn red btn-mod",
+                                                    disabled: btnevents,
                                                     onclick: () => {
+                                                        btnevents = true;
                                                         User.socket.emit("changestatussubmission",{
                                                             status: 'R',
                                                             username: i.username,
                                                             mod: User.username
-                                                        },(response) => {
-                                                            if (response) {
-                                                                queue = queue.filter( u => u.username !== i.username );
-                                                                m.redraw();
-                                                            }
                                                         })
                                                     }
                                                 }, "R"),
                                                 m("button", {
                                                     class: "waves-effect waves-light btn purple btn-mod",
+                                                    disabled: btnevents,
                                                     onclick: () => {
+                                                        btnevents = true;
                                                         User.socket.emit("changestatussubmission",{
                                                             status: 'B',
                                                             username: i.username,
                                                             mod: User.username
-                                                        },(response) => {
-                                                            if (response) {
-                                                                queue = queue.filter( u => u.username !== i.username );
-                                                                m.redraw();
-                                                            }
                                                         })
                                                     }
                                                 }, "B")
