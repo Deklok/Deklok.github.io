@@ -6,6 +6,7 @@ import { Loading } from "./Loading";
 function Mod() {
     var offline;
     var loading = true;
+    var initialloading = true;
     var updatefromevent = false;
     var btnevents = false;
     var statusloading = false;
@@ -21,11 +22,11 @@ function Mod() {
                 queue.push({ username: submission.username, msg: submission.msg, src: submission.image });
                 m.redraw();
                 var elems = document.querySelectorAll('.materialboxed');
-                M.Materialbox.init(elems[elems.length-1]);
-                if (btnevents) { btnevents = false }
+                M.Materialbox.init(elems[elems.length]);
             });
             User.socket.on('updatequeue',(username) => {
                 queue = queue.filter( u => u.username !== username );
+                btnevents = false;
                 m.redraw();
             });
             User.islive().then((res) => {
@@ -33,8 +34,12 @@ function Mod() {
                     offline = !res.live;
                     User.getqueue(res.id).then((res2) => {
                         for (var i = 0; i < res2.length; i++) {
-                            var b64encoded = new Buffer( res2[i].src.data, 'binary' ).toString('base64');
-                            var base64String = "data:image/*;base64," + b64encoded.split("base64")[1]; 
+                            var b64encoded = new Buffer( res2[i].src.data).toString('base64');
+                            var preview = b64encoded.split("base64")[0];
+                            var format = preview.split("/")[1];
+                            var base64String = "data:image/" + format + ";base64," + b64encoded.split("base64")[1]; 
+                            preview = base64String.substring(0,50);
+                            console.log(preview);
                             queue.push({
                                 username: res2[i].username,
                                 msg: res2[i].msg,
@@ -65,7 +70,15 @@ function Mod() {
                     class: "card-panel white"
                 }, [
                     loading ? m(Loading) : m("div",[
-                        m("table.striped",[
+                        m("table.striped",{
+                            oncreate: () => {
+                                if (initialloading) {
+                                    var elems = document.querySelectorAll('.materialboxed');
+                                    M.Materialbox.init(elems);
+                                    initialloading = false;
+                                }
+                            }
+                        },[
                             m("thead", [
                                 m("th", "Img"),
                                 m("th", "Username"),

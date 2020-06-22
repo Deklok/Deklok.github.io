@@ -108,8 +108,13 @@ function Submit() {
                                         type: "file",
                                         onchange: function(e) {
                                             if (e.target.files[0] != null) {
-                                                filename = e.target.files[0].name;
-                                                reader.readAsDataURL(e.target.files[0]);
+                                                var file = e.target.files[0];
+                                                if (file.type == "image/jpeg" || file.type == "image/jpg") {
+                                                    filename = e.target.files[0].name;
+                                                    reader.readAsDataURL(e.target.files[0]);
+                                                } else {
+                                                    filename = "Porfavor elije un archivo JPG o JPEG. El programador ta todo meco aun para otros formatos";
+                                                }
                                             }
                                         }
                                     })
