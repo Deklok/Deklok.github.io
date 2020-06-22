@@ -12,6 +12,7 @@ function Mod() {
     var statusloading = false;
     var queue = [];
     var eleminit = [];
+    var newsubmission = false;
 
     return {
         oninit: function () {
@@ -20,9 +21,8 @@ function Mod() {
             } 
             User.socket.on('submission', (submission) => {
                 queue.push({ username: submission.username, msg: submission.msg, src: submission.image });
+                newsubmission = true;
                 m.redraw();
-                var elems = document.querySelectorAll('.materialboxed');
-                M.Materialbox.init(elems[elems.length]);
             });
             User.socket.on('updatequeue',(username) => {
                 queue = queue.filter( u => u.username !== username );
@@ -76,6 +76,14 @@ function Mod() {
                                     var elems = document.querySelectorAll('.materialboxed');
                                     M.Materialbox.init(elems);
                                     initialloading = false;
+                                }
+                            },
+                            onupdate: () => {
+                                if (newsubmission) {
+                                    console.log(elems);
+                                    var elems = document.querySelectorAll('.materialboxed');
+                                    M.Materialbox.init(elems[elems.length-1]);
+                                    newsubmission = false;
                                 }
                             }
                         },[
