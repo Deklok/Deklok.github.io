@@ -73,14 +73,14 @@ td {
 }
 
 .panel-msg {
-    font-size: x-large;
+    font-size: large;
     color: white;
     text-shadow: 2px 2px black;
     overflow-wrap: break-word
 }
 
 .panel-username {
-    font-size: xxx-large;
+    font-size: x-large;
     font-weight: bolder;
     text-shadow: 4px 4px black;
     color: white;
