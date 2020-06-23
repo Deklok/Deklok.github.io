@@ -22,7 +22,7 @@ function Panel() {
     function showonscreen() {
         onscreen = true;
         m.redraw();
-        setTimeout(removefromscreen,timeonscreen);
+        //setTimeout(removefromscreen,timeonscreen);
     }
     return {
         oncreate: function() {
@@ -61,12 +61,18 @@ function Panel() {
                         });
                     }
                 },[
-                    m("img",{
-                        src: post.src,
-                        style: "height: 80%"
-                    }),
-                    m("div.row",m("div",{
-                        class: "panel-username"
+                    m("div",{
+                        style: "height: 80%; width: 90%"
+                    },[
+                        m("img",{
+                            src: post.src,
+                            style: "height: 100%;max-width: 100%;"
+                        }),
+                    ]),
+                    m("div.row",{
+                        style: "margin-bottom: 0px"
+                    },m("div",{
+                        class: "panel-username",
                     },post.username)),
                     m("div.row",m("div",{
                         class: "panel-msg"
