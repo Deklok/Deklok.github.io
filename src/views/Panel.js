@@ -22,7 +22,7 @@ function Panel() {
     function showonscreen() {
         onscreen = true;
         m.redraw();
-        //setTimeout(removefromscreen,timeonscreen);
+        setTimeout(removefromscreen,timeonscreen);
     }
     return {
         oncreate: function() {
