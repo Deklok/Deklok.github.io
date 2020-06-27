@@ -149,7 +149,8 @@ function Submit() {
                                     id: "msgsubmission",
                                     onchange: function(e) {
                                         msg = e.target.value;
-                                    }
+                                    },
+                                    maxlength: 70
                                 }),
                                 m("label",{
                                     for: "msgsubmission"
