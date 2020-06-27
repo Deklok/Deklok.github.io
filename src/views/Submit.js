@@ -172,6 +172,7 @@ function Submit() {
                                             onreview = true
                                             styleimg = "display:none";
                                             filename = "";
+                                            msg = "";
                                             m.redraw();
                                         }
                                     });
