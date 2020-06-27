@@ -1,7 +1,6 @@
 import m from "mithril";
 import io from 'socket.io-client';
-var BASE_URL = "https://ec2-100-24-238-208.compute-1.amazonaws.com";
-//var BASE_URL = "https://deklokbackend.xyz";
+var BASE_URL = "https://deklokbackend.xyz";
 //var BASE_URL = "https://localhost:8443";
 
 var User = {
