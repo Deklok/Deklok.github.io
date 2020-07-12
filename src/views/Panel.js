@@ -7,8 +7,20 @@ function Panel() {
     var post;
     var timeonscreen = 10000;
     var timetonext = 60000;
+    var cooldown = false;
+    function removeCooldown() { 
+        if (post != null) {
+            showonscreen();
+        } else {
+            if (queue.length > 0) {
+                getfromqueue();
+            } else {
+                cooldown = false;
+            }
+        }
+    }
     function getfromqueue() {
-        post = queue.pop();
+        post = queue.shift();
         showonscreen();
     }
     function removefromscreen() { 
@@ -17,10 +29,13 @@ function Panel() {
         post = null
         if (queue.length > 0) {
             setTimeout(getfromqueue,timetonext);
+        } else {
+            setTimeout(removeCooldown,timetonext);
         }
     }
     function showonscreen() {
         onscreen = true;
+        cooldown = true;
         m.redraw();
         setTimeout(removefromscreen,timeonscreen);
     }
@@ -46,7 +61,10 @@ function Panel() {
                     });
                 }
                 console.log(post);
-                showonscreen();
+                console.log(queue);
+                if (!cooldown) {
+                    showonscreen();
+                }
             });
         },
         view: function() {

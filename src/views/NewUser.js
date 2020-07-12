@@ -38,7 +38,8 @@ function NewUser() {
                                     } else {
                                         btnDisabled = true;
                                     }
-                                }
+                                },
+                                maxlength: 30
                             }),
                             m("label.active",{
                                 for: "newusername"

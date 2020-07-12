@@ -6,7 +6,7 @@ import { Ban } from "./Ban";
 
 function Submit() {
     var offline;
-    var reviewmsg = null;
+    var submissionapprobed = null;
     var ban = false;
     var loading = true;
     var onreview;
@@ -48,12 +48,17 @@ function Submit() {
                 }
                 User.socket.on('reviewed',(approbed) => {
                     onreview = false;
-                    reviewmsg = (approbed)?"Tu meme fue aprobado Pog":"Tu meme fue rechazado Sadge";
+                    submissionapprobed = approbed;
                     m.redraw();
                 });
                 User.socket.on('banned',() => {
                     onreview = false;
                     ban = true;
+                    m.redraw();
+                });
+                User.socket.on('endsession',()=> {
+                    console.log("Ending live session");
+                    offline = true;
                     m.redraw();
                 });
             }).catch((error) => {
@@ -84,7 +89,15 @@ function Submit() {
                         m("p.flow-text","Estamos revisando tu última solicitud. Una vez rechazada o aprobada, podrás enviar otra")
                     ]) : ban ? m(Ban) 
                     : m("div",[
-                        reviewmsg != null && m("div",reviewmsg),
+                        submissionapprobed != null && m("div",[
+                            submissionapprobed ? m("img",{
+                                src: "resources/meme_aprobado.jpg",
+                                style: "height: 200px;"
+                            }) : m("img",{
+                                src: "resources/meme_rechazado.jpg",
+                                style: "height: 200px;"
+                            })
+                        ]),
                         m("blockquote",[
                             m("div",{
                                 style: "font-weight: bold;"
