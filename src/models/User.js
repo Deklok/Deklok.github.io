@@ -1,7 +1,7 @@
 import m from "mithril";
 import io from 'socket.io-client';
 var BASE_URL = "https://deklokbackend.xyz";
-//var BASE_URL = "https://localhost:8443";
+//var BASE_URL = "http://localhost:8080";
 
 var User = {
     email: null,
@@ -123,6 +123,21 @@ var User = {
                     resolve(res.queue);
                 } else {
                     reject("Error in response (not with server)");
+                }
+            }).catch(function(error) {
+                reject(error);
+            })
+        })
+    },
+    getlastlive: function() {
+        return new Promise((resolve,reject) => {
+            m.request({
+                method: "GET",
+                url: BASE_URL + "/lastlivezip",
+            })
+            .then(function(res) {
+                if (!res.error) {
+                    resolve(BASE_URL + "/" + res.url);
                 }
             }).catch(function(error) {
                 reject(error);

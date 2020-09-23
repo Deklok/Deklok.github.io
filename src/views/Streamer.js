@@ -10,6 +10,7 @@ function Streamer() {
     var initialloading = true;
     var loading = false;
     var idlive;
+    var generandozip = false;
     return {
         oncreate: function () {
             if (User.socket == null) {
@@ -143,7 +144,22 @@ function Streamer() {
                         }, [
                             m("button", {
                                 class: "waves-effect waves-purple btn white",
-                                disabled: true
+                                disabled: livesession || generandozip,
+                                onclick: function() {
+                                    generandozip = true;
+                                    User.getlastlive().then((res) => {
+                                        generandozip = false;
+                                        var element = document.createElement('a');
+                                        element.setAttribute('href',res);
+                                        element.style.display = 'none';
+                                        document.body.appendChild(element);
+                                        element.click();
+                                        document.body.removeChild(element);
+                                    }).catch((error) => {
+                                        generandozip = false;
+                                        console.log(error);
+                                    })
+                                }
                             }, [
                                 m("div", {
                                     class: "grey-text text-darken-3"

@@ -34,7 +34,7 @@ function Mod() {
                     offline = !res.live;
                     User.getqueue(res.id).then((res2) => {
                         for (var i = 0; i < res2.length; i++) {
-                            var b64encoded = new Buffer( res2[i].src.data).toString('base64');
+                            var b64encoded = Buffer.from( res2[i].src.data).toString('base64');
                             var preview = b64encoded.split("base64")[0];
                             var format = preview.split("/")[1];
                             var base64String = "data:image/" + format + ";base64," + b64encoded.split("base64")[1]; 
